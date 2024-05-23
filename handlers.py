@@ -78,4 +78,3 @@ def add_task():
     else:
         tasks = Todo.query.all()
         return jsonify({'tasks': [task.to_json() for task in tasks]}), 200
-

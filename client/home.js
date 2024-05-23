@@ -6,8 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.assign('http://127.0.0.1:5500/client/sign_up.html');
     }
 
-    fetch('/tasks')
-        .then(response => response.json())
+    fetch('http://127.0.0.1:5000/tasks')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.tasks.length > 0) {
                 noTasksMessage.style.display = 'none';
@@ -18,9 +23,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     row.insertCell(2).textContent = task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date';
                     const actionsCell = row.insertCell(3);
                     const deleteButton = document.createElement('a');
-                    deleteButton.href = `/delete/${task.id}`;
+                    deleteButton.href = '#';
                     deleteButton.textContent = 'Delete';
                     deleteButton.classList.add('button', 'delete');
+                    deleteButton.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        deleteTask(task.id, row);
+                    });
                     const updateButton = document.createElement('a');
                     updateButton.href = `/update/${task.id}`;
                     updateButton.textContent = 'Update';
@@ -37,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         const formData = new FormData(taskForm);
         const user = JSON.parse(localStorage.getItem('user'));
-        
-        fetch('/tasks', {
+
+        fetch('http://127.0.0.1:5000/tasks', {
             method: 'POST',
             body: JSON.stringify({
                 content: formData.get('content'),
@@ -50,10 +59,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
         .then(response => {
-            if (response.ok) {
-                return response.json();
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error) });
             }
-            throw new Error('Error adding task');
+            return response.json();
         })
         .then(data => {
             const newRow = taskTable.insertRow(-1);
@@ -62,9 +71,13 @@ document.addEventListener('DOMContentLoaded', function () {
             newRow.insertCell(2).textContent = formData.get('due_date') ? new Date(formData.get('due_date')).toLocaleDateString() : 'No due date';
             const actionsCell = newRow.insertCell(3);
             const deleteButton = document.createElement('a');
-            deleteButton.href = `/delete/${data.task.id}`;
+            deleteButton.href = '#';
             deleteButton.textContent = 'Delete';
             deleteButton.classList.add('button', 'delete');
+            deleteButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                deleteTask(data.task.id, newRow);
+            });
             const updateButton = document.createElement('a');
             updateButton.href = `/update/${data.task.id}`;
             updateButton.textContent = 'Update';
@@ -74,6 +87,35 @@ document.addEventListener('DOMContentLoaded', function () {
             noTasksMessage.style.display = 'none';
             taskForm.reset();
         })
-        .catch(error => console.error('Error adding task:', error));
+        .catch(error => {
+            console.error('Error adding task:', error);
+            alert(`Error: ${error.message}`);
+        });
     });
+
+    function deleteTask(taskId, row) {
+        fetch(`http://127.0.0.1:5000/tasks/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error) });
+            }
+            return response.json();
+        })
+        .then(data => {
+            taskTable.deleteRow(row.rowIndex);
+            if (taskTable.rows.length === 1) {  
+                noTasksMessage.style.display = 'block';
+            }
+            
+        })
+        .catch(error => {
+            console.error('Error deleting task:', error);
+            alert(`Error: ${error.message}`);
+        });
+    }
 });
