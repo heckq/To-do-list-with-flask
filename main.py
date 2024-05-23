@@ -27,10 +27,12 @@ def loging_in():
 @app.route('/tasks', methods=['GET', 'POST'])
 def handle_tasks():
     if request.method == 'GET':
-        tasks = Todo.query.all()
+        user_id = request.args.get('user_id')  
+        tasks = Todo.query.filter_by(user_id=user_id).all()  
         return jsonify({'tasks': [task.to_json() for task in tasks]}), 200
     elif request.method == 'POST':
         return add_task()
+
 
 
 @app.route('/tasks/<int:task_id>', methods=['DELETE'])

@@ -2,11 +2,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const taskTable = document.getElementById('task-table');
     const noTasksMessage = document.getElementById('no-tasks');
 
-    if (!localStorage.getItem('user')) {
-        window.location.assign('http://127.0.0.1:5500/client/sign_up.html');
-    }
+    const user = JSON.parse(localStorage.getItem('user')); // Assuming user info is stored in localStorage
+    const userId = user.id;
 
-    fetch('http://127.0.0.1:5000/tasks')
+    fetch(`http://127.0.0.1:5000/tasks?user_id=${userId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -45,14 +44,13 @@ document.addEventListener('DOMContentLoaded', function () {
     taskForm.addEventListener('submit', function (event) {
         event.preventDefault();
         const formData = new FormData(taskForm);
-        const user = JSON.parse(localStorage.getItem('user'));
 
         fetch('http://127.0.0.1:5000/tasks', {
             method: 'POST',
             body: JSON.stringify({
                 content: formData.get('content'),
                 due_date: formData.get('due_date'),
-                user_id: user.id
+                user_id: userId
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -111,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (taskTable.rows.length === 1) {  
                 noTasksMessage.style.display = 'block';
             }
-            
         })
         .catch(error => {
             console.error('Error deleting task:', error);
