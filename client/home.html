@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <title>Document</title>
+</head>
+<body>
+<div class="content">
+    <h1>Task Master</h1>
+    <h4 class="no-tasks" id="no-tasks">There are no tasks. Create one below!</h4>
+    <table id="task-table">
+        <tr>
+            <th>Task</th>
+            <th>Added</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+    <div class="form">
+        <form id="task-form">
+            <input type="text" name="content" id="content" placeholder="Enter new task" required>
+            <input type="date" name="due_date" id="due_date">
+            <input type="submit" value="Add Task" class="submit-btn">
+        </form>
+    </div>
+</div>
+
+<script src="home.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="content">
+        <h1>Login</h1>
+        <div class="form">
+            <form action="/login" method="POST">
+                <input type="text" name="identifier" id="identifier" placeholder="Enter username or email" required>
+                <input type="password" name="password" id="password" placeholder="Enter password" required>
+                <input type="submit" value="Login" class="submit-btn">
+            </form>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
