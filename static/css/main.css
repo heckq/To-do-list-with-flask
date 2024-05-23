@@ -47,20 +47,21 @@ td {
 }
 
 .form {
-    margin-top: 40px; /* Зміщуємо форму додавання завдань нижче */
+    margin-top: 40px;
     text-align: center;
 }
 
-input[type="text"] {
+input[type="text"], input[type="date"] {
     width: 70%;
     padding: 10px;
-    margin-right: 10px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
-input[type="submit"] {
+input[type="submit"].submit-btn {
+    width: 100%;
     padding: 10px 20px;
     background-color: #28a745;
     color: white;
@@ -68,10 +69,10 @@ input[type="submit"] {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 20px; /* Додаємо відступ зверху */
+    margin-top: 20px;
 }
 
-input[type="submit"]:hover {
+input[type="submit"].submit-btn:hover {
     background-color: #218838;
 }
 
@@ -107,7 +108,7 @@ a.button.update:hover {
 }
 
 .no-tasks {
-    margin-bottom: 20px; /* Додаємо відступ знизу для відокремлення від форми */
+    margin-bottom: 20px; 
 }
 
 @media (max-width: 600px) {
@@ -115,12 +116,11 @@ a.button.update:hover {
         padding: 15px;
     }
 
-    input[type="text"] {
+    input[type="text"], input[type="date"] {
         width: 100%;
-        margin-bottom: 10px;
     }
 
-    input[type="submit"] {
+    input[type="submit"].submit-btn {
         width: 100%;
     }
 }

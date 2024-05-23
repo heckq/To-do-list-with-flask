@@ -15,12 +15,14 @@
         <tr>
             <th>Task</th>
             <th>Added</th>
+            <th>Due Date</th>
             <th>Actions</th>
         </tr>
         {% for task in tasks %}
         <tr>
             <td>{{ task.content }}</td>
-            <td>{{ task.date_created.date() }}</td>
+            <td>{{ task.date_created.strftime('%Y-%m-%d') }}</td>
+            <td>{{ task.due_date.strftime('%Y-%m-%d') if task.due_date else 'No due date' }}</td>
             <td>
                 <a href="/delete/{{task.id}}" class="button delete">Delete</a>
                 <a href="/update/{{task.id}}" class="button update">Update</a>
@@ -32,7 +34,8 @@
     <div class="form">
         <form action="/" method="POST">
             <input type="text" name="content" id="content" placeholder="Enter new task" required>
-            <input type="submit" value="Add Task">
+            <input type="date" name="due_date" id="due_date">
+            <input type="submit" value="Add Task" class="submit-btn">
         </form>
     </div>
 </div>
