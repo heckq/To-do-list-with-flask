@@ -1,44 +1,72 @@
 document.addEventListener('DOMContentLoaded', function () {
     const taskTable = document.getElementById('task-table');
     const noTasksMessage = document.getElementById('no-tasks');
+    const prevPageButton = document.getElementById('prev-page');
+    const nextPageButton = document.getElementById('next-page');
+    let currentPage = 1;
 
     const user = JSON.parse(localStorage.getItem('user')); // Assuming user info is stored in localStorage
     const userId = user.id;
 
-    fetch(`http://127.0.0.1:5000/tasks?user_id=${userId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.tasks.length > 0) {
-                noTasksMessage.style.display = 'none';
-                data.tasks.forEach(task => {
-                    const row = taskTable.insertRow(-1);
-                    row.insertCell(0).textContent = task.content;
-                    row.insertCell(1).textContent = new Date(task.date_created).toLocaleDateString();
-                    row.insertCell(2).textContent = task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date';
-                    const actionsCell = row.insertCell(3);
-                    const deleteButton = document.createElement('a');
-                    deleteButton.href = '#';
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.classList.add('button', 'delete');
-                    deleteButton.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        deleteTask(task.id, row);
+    function fetchTasks(page) {
+        fetch(`http://127.0.0.1:5000/tasks?user_id=${userId}&page=${page}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Data received:", data); // Debug statement
+                taskTable.innerHTML = ''; 
+                if (data.tasks.length > 0) {
+                    noTasksMessage.style.display = 'none';
+                    data.tasks.forEach(task => {
+                        const row = taskTable.insertRow(-1);
+                        row.insertCell(0).textContent = task.content;
+                        row.insertCell(1).textContent = new Date(task.date_created).toLocaleDateString();
+                        row.insertCell(2).textContent = task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date';
+                        const actionsCell = row.insertCell(3);
+                        const deleteButton = document.createElement('a');
+                        deleteButton.href = '#';
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.classList.add('button', 'delete');
+                        deleteButton.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            deleteTask(task.id, row);
+                        });
+                        const updateButton = document.createElement('a');
+                        updateButton.href = `/update/${task.id}`;
+                        updateButton.textContent = 'Update';
+                        updateButton.classList.add('button', 'update');
+                        actionsCell.appendChild(deleteButton);
+                        actionsCell.appendChild(updateButton);
                     });
-                    const updateButton = document.createElement('a');
-                    updateButton.href = `/update/${task.id}`;
-                    updateButton.textContent = 'Update';
-                    updateButton.classList.add('button', 'update');
-                    actionsCell.appendChild(deleteButton);
-                    actionsCell.appendChild(updateButton);
-                });
-            }
-        })
-        .catch(error => console.error('Error fetching tasks:', error));
+                } else {
+                    noTasksMessage.style.display = 'block';
+                }
+
+                prevPageButton.disabled = !data.has_prev;
+                nextPageButton.disabled = !data.has_next;
+
+                currentPage = page;
+            })
+            .catch(error => console.error('Error fetching tasks:', error));
+    }
+
+    fetchTasks(currentPage);
+
+    prevPageButton.addEventListener('click', function () {
+        if (!prevPageButton.disabled) {
+            fetchTasks(currentPage - 1);
+        }
+    });
+
+    nextPageButton.addEventListener('click', function () {
+        if (!nextPageButton.disabled) {
+            fetchTasks(currentPage + 1);
+        }
+    });
 
     const taskForm = document.getElementById('task-form');
     taskForm.addEventListener('submit', function (event) {
@@ -63,26 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(data => {
-            const newRow = taskTable.insertRow(-1);
-            newRow.insertCell(0).textContent = formData.get('content');
-            newRow.insertCell(1).textContent = new Date().toLocaleDateString();
-            newRow.insertCell(2).textContent = formData.get('due_date') ? new Date(formData.get('due_date')).toLocaleDateString() : 'No due date';
-            const actionsCell = newRow.insertCell(3);
-            const deleteButton = document.createElement('a');
-            deleteButton.href = '#';
-            deleteButton.textContent = 'Delete';
-            deleteButton.classList.add('button', 'delete');
-            deleteButton.addEventListener('click', function (event) {
-                event.preventDefault();
-                deleteTask(data.task.id, newRow);
-            });
-            const updateButton = document.createElement('a');
-            updateButton.href = `/update/${data.task.id}`;
-            updateButton.textContent = 'Update';
-            updateButton.classList.add('button', 'update');
-            actionsCell.appendChild(deleteButton);
-            actionsCell.appendChild(updateButton);
-            noTasksMessage.style.display = 'none';
+            fetchTasks(currentPage);
             taskForm.reset();
         })
         .catch(error => {

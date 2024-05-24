@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from models import Todo, db
 from handlers import sign_up,login,add_task
 
+TASKS_PER_PAGE = 3
 
 
 load_dotenv()
@@ -28,10 +29,18 @@ def loging_in():
 def handle_tasks():
     if request.method == 'GET':
         user_id = request.args.get('user_id')  
-        tasks = Todo.query.filter_by(user_id=user_id).all()  
-        return jsonify({'tasks': [task.to_json() for task in tasks]}), 200
+        page = int(request.args.get('page', 1))  
+        tasks = Todo.query.filter_by(user_id=user_id).paginate(page=page, per_page=TASKS_PER_PAGE, error_out=False)
+        tasks_data = [task.to_json() for task in tasks.items]
+
+        has_prev = tasks.has_prev
+        if page == 1:
+            has_prev = False
+
+        return jsonify({'tasks': tasks_data, 'has_prev': has_prev, 'has_next': tasks.has_next}), 200
     elif request.method == 'POST':
         return add_task()
+
 
 
 

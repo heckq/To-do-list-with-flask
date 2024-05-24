@@ -15,43 +15,47 @@
             <a href="#" class="button" id="sign-out-btn" onclick="signOut()">Sign Out</a>
         </nav>
     </header>
-<div class="content">
-    <h4 class="no-tasks" id="no-tasks">There are no tasks. Create one below!</h4>
-    <table id="task-table">
-        <tr>
-            <th>Task</th>
-            <th>Added</th>
-            <th>Due Date</th>
-            <th>Actions</th>
-        </tr>
-    </table>
-    <div class="form">
-        <form id="task-form">
-            <input type="text" name="content" id="content" placeholder="Enter new task" required>
-            <input type="date" name="due_date" id="due_date">
-            <input type="submit" value="Add Task" class="submit-btn">
-        </form>
+    <div class="content">
+        <h4 class="no-tasks" id="no-tasks">There are no tasks. Create one below!</h4>
+        <table id="task-table">
+            <tr>
+                <th>Task</th>
+                <th>Added</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+            </tr>
+        </table>
+        <div class="pagination">
+            <button id="prev-page" class="button">Previous</button>
+            <button id="next-page" class="button">Next</button>
+        </div>
+        <div class="form">
+            <form id="task-form">
+                <input type="text" name="content" id="content" placeholder="Enter new task" required>
+                <input type="date" name="due_date" id="due_date">
+                <input type="submit" value="Add Task" class="submit-btn">
+            </form>
+        </div>
     </div>
-</div>
-<script src="home.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user) {
-            document.getElementById('login-btn').style.display = 'none';
-            document.getElementById('sign-up-btn').style.display = 'none';
-            document.getElementById('sign-out-btn').style.display = 'block';
-        } else {
-            document.getElementById('login-btn').style.display = 'block';
-            document.getElementById('sign-up-btn').style.display = 'block';
-            document.getElementById('sign-out-btn').style.display = 'none';
-        }
-    });
+    <script src="home.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                document.getElementById('login-btn').style.display = 'none';
+                document.getElementById('sign-up-btn').style.display = 'none';
+                document.getElementById('sign-out-btn').style.display = 'block';
+            } else {
+                document.getElementById('login-btn').style.display = 'block';
+                document.getElementById('sign-up-btn').style.display = 'block';
+                document.getElementById('sign-out-btn').style.display = 'none';
+            }
+        });
 
-    function signOut() {
-        localStorage.removeItem('user');
-        window.location.href = 'login.html';
-    }
-</script>
+        function signOut() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
 </html>

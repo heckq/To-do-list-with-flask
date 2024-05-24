@@ -1,7 +1,7 @@
 body, html {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f2f5;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #7088ff, #79fff8);
     color: #333;
     display: flex;
     flex-direction: column;
@@ -154,4 +154,23 @@ a.button.update:hover {
     input[type="submit"].submit-btn {
         width: 100%;
     }
+}
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #61dafb;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #21a1f1;
 }
