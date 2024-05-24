@@ -5,22 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
-    <title>Document</title>
+    <title>Sign Up</title>
 </head>
 <body>
-    <div class="content">
-        <h1>Register</h1>
-        <div class="form">
-            <form action="/sign_up" method="POST">
-                <input type="text" name="username" id="username" placeholder="Enter username" required>
-                <input type="email" name="email" id="email" placeholder="Enter email" required>
-                <input type="password" name="password" id="password" placeholder="Enter password" required>
-                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password" required>
-                <input type="submit" value="Register" class="submit-btn">
-            </form>
-        </div>
+<header class="header">
+    <div class="container">
+        <nav>
+            <a href="login.html" class="button">Login</a>
+        </nav>
     </div>
-
-    <script src="sign_up.js"></script>
+</header>
+<div class="content">
+    <h1>Register</h1>
+    <div class="form">
+        <form action="/sign_up" method="POST">
+            <input type="text" name="username" id="username" placeholder="Enter username" required>
+            <input type="email" name="email" id="email" placeholder="Enter email" required>
+            <input type="password" name="password" id="password" placeholder="Enter password" required>
+            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password" required>
+            <input type="submit" value="Register" class="submit-btn">
+        </form>
+    </div>
+</div>
+<script src="sign_up.js"></script>
 </body>
 </html>

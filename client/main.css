@@ -4,14 +4,45 @@ body, html {
     background-color: #f0f2f5;
     color: #333;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100%;
+    min-height: 100vh;
+}
+
+.header {
+    width: 100vw;
+    background-color: #282c34;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header .container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+}
+
+.header nav a.button {
+    color: white;
+    background-color: #61dafb;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.header nav a.button:hover {
+    background-color: #21a1f1;
 }
 
 .content {
-    margin: 20px auto;
+    width: 100%;
     max-width: 600px;
+    margin: 20px auto;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
@@ -51,7 +82,7 @@ td {
     text-align: center;
 }
 
-input[type="text"], input[type="date"] {
+input[type="text"], input[type="date"], input[type="email"], input[type="password"] {
     width: 70%;
     padding: 10px;
     margin-bottom: 10px;
@@ -80,7 +111,7 @@ a.button {
     display: inline-block;
     padding: 10px 15px;
     color: white;
-    background-color: #007bff;
+    background-color: #61dafb;
     border-radius: 4px;
     text-decoration: none;
     margin: 0 5px;
@@ -88,7 +119,7 @@ a.button {
 }
 
 a.button:hover {
-    background-color: #0056b3;
+    background-color: #21a1f1;
 }
 
 a.button.delete {
@@ -108,7 +139,7 @@ a.button.update:hover {
 }
 
 .no-tasks {
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 @media (max-width: 600px) {
@@ -116,41 +147,7 @@ a.button.update:hover {
         padding: 15px;
     }
 
-    input[type="text"], input[type="date"] {
-        width: 100%;
-    }
-
-    input[type="submit"].submit-btn {
-        width: 100%;
-    }
-}
-input[type="email"], input[type="password"] {
-    width: 70%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-input[type="submit"].submit-btn {
-    width: 100%;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
-}
-
-input[type="submit"].submit-btn:hover {
-    background-color: #218838;
-}
-
-@media (max-width: 600px) {
-    input[type="email"], input[type="password"] {
+    input[type="text"], input[type="date"], input[type="email"], input[type="password"] {
         width: 100%;
     }
 

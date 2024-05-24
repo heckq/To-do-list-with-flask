@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
-    <title>Document</title>
+    <title>Home</title>
 </head>
 <body>
+    <header class="header">
+        <nav class="container">
+            <a href="login.html" class="button" id="login-btn">Login</a>
+            <a href="sign_up.html" class="button" id="sign-up-btn">Sign Up</a>
+            <a href="#" class="button" id="sign-out-btn" onclick="signOut()">Sign Out</a>
+        </nav>
+    </header>
 <div class="content">
-    <h1>Task Master</h1>
     <h4 class="no-tasks" id="no-tasks">There are no tasks. Create one below!</h4>
     <table id="task-table">
         <tr>
@@ -27,7 +33,25 @@
         </form>
     </div>
 </div>
-
 <script src="home.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            document.getElementById('login-btn').style.display = 'none';
+            document.getElementById('sign-up-btn').style.display = 'none';
+            document.getElementById('sign-out-btn').style.display = 'block';
+        } else {
+            document.getElementById('login-btn').style.display = 'block';
+            document.getElementById('sign-up-btn').style.display = 'block';
+            document.getElementById('sign-out-btn').style.display = 'none';
+        }
+    });
+
+    function signOut() {
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+    }
+</script>
 </body>
 </html>
